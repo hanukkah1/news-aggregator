@@ -1,0 +1,129 @@
+name: News Aggregator
+
+on:
+  # 定时触发 - 每天 8:00, 12:00, 18:00 (UTC时间，需要根据时区调整)
+  schedule:
+    - cron: '0 0,4,10 * * *'  # UTC 0:00, 4:00, 10:00 (对应北京时间 8:00, 12:00, 18:00)
+  
+  # 手动触发
+  workflow_dispatch:
+    inputs:
+      config_path:
+        description: '配置文件路径'
+        required: false
+        default: 'config.yaml'
+  
+  # 推送触发（用于测试）
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'src/**'
+      - 'config.yaml'
+      - '.github/workflows/**'
+
+jobs:
+  aggregate-news:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: 设置Python环境
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        cache: 'pip'
+    
+    - name: 安装依赖
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: 运行新闻聚合器
+      run: |
+        python src/main.py config.yaml
+      env:
+        PYTHONPATH: ${{ github.workspace }}/src
+    
+    - name: 准备GitHub Pages部署
+      run: |
+        # 确保docs目录存在
+        mkdir -p docs
+        
+        # 如果有自定义域名，可以在这里设置
+        # echo "your-domain.com" > docs/CNAME
+        
+        # 显示生成的文件
+        echo "生成的文件:"
+        find docs -type f -name "*.html" | head -10
+        echo "RSS文件:"
+        find rss -type f -name "*.xml" | head -10
+    
+    - name: 部署到GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs
+        destination_dir: .
+        keep_files: false
+        force_orphan: true
+    
+    - name: 部署RSS到GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./rss
+        destination_dir: ./rss
+        keep_files: false
+    
+    - name: 上传构建产物
+      uses: actions/upload-artifact@v4
+      with:
+        name: news-aggregator-output
+        path: |
+          docs/
+          rss/
+          data/
+          logs/
+        retention-days: 7
+    
+    - name: 发送通知（可选）
+      if: always()
+      run: |
+        echo "新闻聚合任务完成"
+        echo "状态: ${{ job.status }}"
+        echo "时间: $(date)"
+        echo "详情查看Actions日志"
+
+  # 定期清理旧数据
+  cleanup-old-data:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+    needs: aggregate-news
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+    
+    - name: 清理旧数据
+      run: |
+        # 保留最近30天的数据
+        find data -name "*.json" -mtime +30 -delete
+        find logs -name "*.log" -mtime +30 -delete
+        echo "旧数据清理完成"
+    
+    - name: 提交清理结果
+      run: |
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git add data/ logs/
+        git diff --staged --quiet || git commit -m "chore: 清理旧数据"
+        git push
