@@ -5,14 +5,16 @@ from pathlib import Path
 import sys
 import os
 
-# 添加当前目录到Python路径
-sys.path.append(str(Path(__file__).parent))
+# 添加src目录到Python路径
+src_path = Path(__file__).parent
+sys.path.insert(0, str(src_path))
 
 from config import Config
 from fetcher import NewsFetcher
 from parser import NewsParser
 from rss_generator import RSSGenerator
 from html_generator import HTMLGenerator
+
 
 
 def setup_logging(config: Config):
