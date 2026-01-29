@@ -16,7 +16,6 @@ from rss_generator import RSSGenerator
 from html_generator import HTMLGenerator
 
 
-
 def setup_logging(config: Config):
     """设置日志"""
     log_config = config.get_logging_config()
