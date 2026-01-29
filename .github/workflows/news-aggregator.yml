@@ -47,11 +47,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     
-    - name: 运行新闻聚合器
+       - name: 运行新闻聚合器
       run: |
-        python src/main.py config.yaml
+        python -m src.main config.yaml
       env:
-        PYTHONPATH: ${{ github.workspace }}/src
+        PYTHONPATH: ${{ github.workspace }}
+
     
     - name: 准备GitHub Pages部署
       run: |
