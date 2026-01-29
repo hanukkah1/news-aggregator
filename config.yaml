@@ -1,0 +1,143 @@
+# 新闻聚合器配置文件
+# 请根据需要修改以下配置
+
+# 调度设置
+schedule:
+  # 每天 8:00, 12:00, 18:00 运行 (UTC时间，需要根据时区调整)
+  # 例如：UTC+8 时区，8:00 = 0:00 UTC
+  - cron: '0 0,4,10 * * *'  # UTC 时间：0:00, 4:00, 10:00 (对应北京时间 8:00, 12:00, 18:00)
+  
+# 新闻源配置
+news_sources:
+  # 科技分类
+  tech:
+    - name: "36氪"
+      url: "https://36kr.com"
+      selector: ".article-item"
+      link_selector: "a"
+      title_selector: ".article-title"
+      desc_selector: ".article-desc"
+      enabled: true
+      
+    - name: "虎嗅"
+      url: "https://www.huxiu.com"
+      selector: ".article-item"
+      link_selector: "a"
+      title_selector: ".article-title"
+      desc_selector: ".article-summary"
+      enabled: true
+      
+    - name: "TechCrunch"
+      url: "https://techcrunch.com"
+      selector: ".post-block"
+      link_selector: ".post-block__title__link"
+      title_selector: ".post-block__title__link"
+      desc_selector: ".post-block__excerpt"
+      enabled: true
+
+  # 财经分类
+  finance:
+    - name: "华尔街见闻"
+      url: "https://wallstreetcn.com"
+      selector: ".news-item"
+      link_selector: "a"
+      title_selector: ".title"
+      desc_selector: ".summary"
+      enabled: true
+      
+    - name: "财新网"
+      url: "https://www.caixin.com"
+      selector: ".news-item"
+      link_selector: "a"
+      title_selector: ".title"
+      desc_selector: ".summary"
+      enabled: true
+      
+    - name: "Bloomberg"
+      url: "https://www.bloomberg.com"
+      selector: ".story-list-story"
+      link_selector: ".story-list-story__headline-link"
+      title_selector: ".story-list-story__headline-link"
+      desc_selector: ".story-list-story__summary"
+      enabled: true
+
+  # 娱乐分类
+  entertainment:
+    - name: "新浪娱乐"
+      url: "https://ent.sina.com.cn"
+      selector: ".news-item"
+      link_selector: "a"
+      title_selector: ".news-title"
+      desc_selector: ".news-desc"
+      enabled: true
+      
+    - name: "腾讯娱乐"
+      url: "https://ent.qq.com"
+      selector: ".news-item"
+      link_selector: "a"
+      title_selector: ".news-title"
+      desc_selector: ".news-desc"
+      enabled: true
+      
+    - name: "Variety"
+      url: "https://variety.com"
+      selector: ".content-card"
+      link_selector: ".content-card__title"
+      title_selector: ".content-card__title"
+      desc_selector: ".content-card__description"
+      enabled: true
+
+# RSS 生成设置
+rss:
+  output_dir: "rss"
+  max_items_per_feed: 50
+  ttl: 180  # 分钟，缓存时间
+  author: "Auto News Aggregator"
+  language: "zh-CN"
+  
+# HTML 页面生成设置
+html:
+  output_dir: "docs"
+  max_items_per_page: 20
+  theme: "modern"  # modern, dark, minimal
+  show_images: true
+  show_descriptions: true
+  
+# 数据存储设置
+storage:
+  data_dir: "data"
+  keep_days: 30  # 保留多少天的数据
+  deduplicate: true  # 是否去重
+  
+# 抓取设置
+fetcher:
+  timeout: 30  # 请求超时时间（秒）
+  retry_times: 3  # 失败重试次数
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+  delay_between_requests: 2  # 请求间隔（秒）
+  
+# 通知设置（可选）
+notifications:
+  telegram:
+    enabled: false
+    bot_token: ""
+    chat_id: ""
+    
+  slack:
+    enabled: false
+    webhook_url: ""
+    
+  email:
+    enabled: false
+    smtp_server: ""
+    smtp_port: 587
+    sender_email: ""
+    sender_password: ""
+    receiver_email: ""
+
+# 日志设置
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  file: "logs/news-aggregator.log"
+  max_size_mb: 10
+  backup_count: 5
