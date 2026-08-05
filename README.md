@@ -1,158 +1,117 @@
-# 自动化新闻聚合器 (Auto News Aggregator)
+**1/**
+How long to crack a 256-bit Bitcoin wallet?
+The universe dies first. 🔒
 
-一个基于 GitHub Actions 的自动化新闻聚合和 RSS 订阅源生成器，每天早中晚定时获取最新的科技、财经和娱乐新闻。
+But what if the wallet's "randomness" was never random?
+We fully reproduced the ColdCard Yasmarang PRNG flaw and slashed the crack complexity from **2²⁵⁶ to 2⁴⁰**.
 
-## ✨ 功能特性
+**A 2²¹⁶× reduction.** 216 orders of magnitude, gone.
+The word "impossible" just got rewritten. 🧵👇
 
-- 🔄 **自动化采集**：每天早中晚定时获取最新新闻
-- 📰 **多分类支持**：科技、财经、娱乐三大分类
-- 🌐 **RSS 生成**：自动生成标准化 RSS 订阅源
-- 📊 **网页展示**：美观的新闻汇总页面
-- ⚡ **GitHub Actions**：无需服务器，完全自动化运行
-- 🎯 **可配置**：灵活的源配置和调度设置
+**2/**
+📦 Two weapons, one mission: turn "un-enumerable" into "enumerated."
 
-## 🚀 快速开始
+⚡ **Yasmarang-Streaming** — pure streaming engine. States in, addresses out, memory ≈ 0. 42 states/sec, 2× the Python original.
 
-### 1. Fork 本仓库
+💾 **Yasmarang-Cached** — the real game-breaker 👇
 
-点击右上角的 "Fork" 按钮将本仓库复制到您的 GitHub 账户。
+**3/**
+Why does Cached hit different?
 
-### 2. 启用 GitHub Pages
+✅ **SQLite permanent cache** — every computed state banked forever; PBKDF2 (90% of compute) skipped outright
+✅ **Checkpoint & resume** — Ctrl-C whenever. 100k states today, continue tomorrow — siege the whole space, slice by slice
+✅ **Free retargeting** — new target list? The entire space is already waiting in the DB. Re-screen in seconds
+✅ **Cross-implementation** — Python and Go resume each other's databases, byte-identical fingerprints
 
-进入仓库设置：
-- Settings → Pages → Source → Deploy from a branch
-- 选择 `gh-pages` 分支和 `/ (root)` 目录
-- 点击 Save
+Compute once. Harvest forever. 🎯
 
-### 3. 配置（可选）
+**4/**
+What can it enumerate? **Everything.** 🔍
 
-编辑 `config.yaml` 文件自定义：
-- 新闻源 URL
-- 抓取频率
-- RSS 生成设置
-- 网页展示样式
+▪️ Boot time windows (SysTick + RTC dual time sources, any range)
+▪️ Device UID (single / range / batch / BCD grid / full space)
+▪️ UID unknown? Pad folding still covers the entire 2³²
+▪️ Mk4+ 32-bit reseed candidates
+▪️ PRNG stream offsets
+▪️ Precision tiers: smoke test → 20M states/sec
 
-### 4. 手动触发（可选）
+Every state → 24-word mnemonic → 40+ addresses → target matching, **zero false negatives**.
+Every coin in the space is within range. 🎯
 
-进入 Actions 标签页，选择 "News Aggregator" workflow，点击 "Run workflow" 手动触发。
+**5/**
+Intel is the trigger. 🕵️
 
-## 📁 项目结构
+🔗 **On-chain intel** — first TX time → pin the wallet's birth window
+🆔 **Device UID** — deletes the 2³² folded space in one stroke
+⏱️ **Boot time** — every 10× tighter window = 10× less compute
 
-```
-news-aggregator/
-├── .github/
-│   └── workflows/
-│       └── news-aggregator.yml    # GitHub Actions 工作流
-├── src/
-│   ├── __init__.py
-│   ├── config.py                  # 配置管理
-│   ├── fetcher.py                 # 新闻抓取器
-│   ├── parser.py                  # 新闻解析器
-│   ├── rss_generator.py           # RSS 生成器
-│   ├── html_generator.py          # HTML 页面生成器
-│   └── main.py                    # 主程序入口
-├── templates/
-│   ├── index.html                 # 主页面模板
-│   └── category.html              # 分类页面模板
-├── data/
-│   └── .gitkeep                   # 数据目录占位符
-├── config.yaml                    # 配置文件
-├── requirements.txt               # Python 依赖
-├── .gitignore
-└── README.md
-```
+The tool enumerates all three: any window, any UID sweep, folding as fallback.
+**The sharper the intel, the closer 2⁴⁰ gets to "one afternoon."**
+No intel? The tool brute-lays the groundwork, grinding forward inch by inch.
 
-## 📖 使用指南
+**6/**
+This is what we proved:
 
-### 配置新闻源
+Cryptographic walls are never toppled by brute force.
+They're opened from the inside — by **one faulty random number**. 🏰💥
 
-编辑 `config.yaml` 文件添加或修改新闻源：
+A universe-scale problem → an afternoon's engineering.
+The tool is ready. The rest is just time. ⏳
 
-```yaml
-news_sources:
-  tech:
-    - name: "科技日报"
-      url: "https://example.com/tech"
-      selector: ".news-item"
-    
-  finance:
-    - name: "财经新闻"
-      url: "https://example.com/finance"
-      selector: ".article"
-    
-  entertainment:
-    - name: "娱乐资讯"
-      url: "https://example.com/entertainment"
-      selector: ".news"
-```
+#COLDCARD #BitcoinHack #CryptoSecurity #SeedSecurity #HardwareWallet #selfcustody
+-------------2
+Token usage monitor CLI · Linux + Windows
 
-### 调度设置
+Static Go build · symbols stripped · zero egress · zero telemetry
+SHA256 verified · strace / Wireshark self-audit ready
 
-在 `.github/workflows/news-aggregator.yml` 中配置：
+Tiers:
 
-```yaml
-schedule:
-  # 每天 8:00, 12:00, 18:00 运行
-  - cron: '0 8,12,18 * * *'
-```
+Streaming + README .............. 0.0033 USDT
+Cached    + README .............. 0.01 BTC
+Architecture source (Streaming | Cached) ... 0.018 BTC
 
-## 🔧 技术栈
+BTC: bc1qk3dvn48grr3dkmnfwlyux6vy5vqwdezts9lxgx
 
-- **Python 3.9+**：核心编程语言
-- **Requests**：HTTP 请求库
-- **BeautifulSoup4**：HTML 解析
-- **Feedgen**：RSS 生成
-- **Jinja2**：HTML 模板引擎
-- **GitHub Actions**：自动化调度
-- **GitHub Pages**：静态页面托管
+EMAIL：gatherone@proton.me
 
-## 📊 输出示例
+Flow: pay -> DM @YOUR_X_HANDLE with tx screenshot -> delivery within 12h of confirmation
 
-### RSS 订阅源
-- `https://yourusername.github.io/news-aggregator/rss/tech.xml`
-- `https://yourusername.github.io/news-aggregator/rss/finance.xml`
-- `https://yourusername.github.io/news-aggregator/rss/entertainment.xml`
+---
 
-### 网页展示
-- 主页面：`https://yourusername.github.io/news-aggregator/`
-- 分类页面：`https://yourusername.github.io/news-aggregator/category/tech.html`
+[Thread 1/3]
+Why static Go?
+Single-binary deploy, zero runtime deps.
+Symbols stripped - reversing cost ~= rewriting.
+Want to audit? Buy the source tier. Source = docs.
 
-## ⚙️ 高级配置
+[Thread 2/3]
+Zero egress means: no network calls except the LLM API you explicitly invoke.
+No telemetry, no data collection.
+Verify it yourself with tcpdump / Wireshark in 2 minutes.
 
-### 自定义抓取规则
+[Thread 3/3]
+Delivery package:
+• Linux + Windows binaries
+• README deployment notes
+• SHA256 checksums
+Source tier adds full architecture annotations and reproducible build scripts.
 
-支持多种解析方式：
-- CSS 选择器
-- XPath
-- 正则表达式
+#COLDCARD #BitcoinHack #CryptoSecurity #SeedSecurity #HardwareWallet #selfcustody   
+                                                                                             LION626GROUP.
 
-### 数据存储
+BY THE WAY:
+Gatherone deadline has passed. We have not received payment, and we are done waiting.We are releasing your data.
+  gatherone DB: the "core ledger" of a cross-platform ad business.
 
-- 新闻数据存储在 `data/` 目录
-- 支持历史记录和去重
-- 可配置保留天数
+  44GB hosting $721M+ in cumulative ad spend across Meta/Google/TikTok — 14.97M placement rows, 114K accounts, 790
+  clients, 83 countries.
 
-### 通知集成
+  Gaming vertical leads at $226M. Top client JOYFUL alone: $114M.
+NOW everybody can download and watch。
+AND WE BUILD A ENUMTOOLS OF COLDCARD ENUMTOOLS
 
-可选集成：
-- Telegram Bot
-- Slack Webhook
-- Email 通知
-
-## 🤝 贡献指南
-
-欢迎提交 Issue 和 Pull Request！
-
-## 📄 许可证
-
-MIT License - 详见 LICENSE 文件
-
-## 🙏 致谢
-
-- GitHub Actions 提供自动化支持
-- 各新闻源提供公开内容
-- 开源社区的优秀工具库
-
-## 📞 支持
-
-如有问题，请在 GitHub Issues 中提出。
+https://github.com/yinpengmaoca-hue/COLDCARD_ENUM_TOOLS-gatherone-backup/releases/tag/v20260720
+48001c41a44cdd6fcd8d78ce484d5fdf5c578841e10fb223e4ece982b10f4b61 *gatherone_full_20260720_181615.sql.gz.part_01
+3924cc7ac46528c718c1f74c259796d308c3729af0024a2675b9b19f671e0a63 *gatherone_full_20260720_181615.sql.gz.part_02
+ff37a62de9388ecd63488128b869d6cfa99e4802178f6cfb2e6f4c78b074c079 *gatherone_full_20260720_181615.sql.gz.part_03
